@@ -241,17 +241,28 @@
 
       const formData = new FormData(this);
       
-      // PASTE YOUR GOOGLE SCRIPT URL HERE
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwWaWK6hFyCU4f3IMeDY_mdeBM5FEM-58nTIiCwsq6silc4ZkzoCUnLbTAWiWxnLBw26A/exec'; 
+    // RSVP Form Submission
+    document.getElementById("rsvp-form").addEventListener("submit", function(e) {
+      e.preventDefault(); // Stops the URL from changing
+      const button = this.querySelector("button");
+      button.innerText = "SENDING...";
+      button.disabled = true;
+
+      const formData = new FormData(this);
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwWaWK6hFyCU4f3IMeDY_mdeBM5FEM-58nTIiCwsq6silc4ZkzoCUnLbTAWiWxnLBw26A/exec';
       
-      fetch(scriptURL, { method: 'POST', body: formData })
-        .then(response => {
+      fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
+        .then(() => {
           document.getElementById("form-status").style.display = "block";
           this.reset();
-          button.innerText = "Send RSVP";
+          button.innerText = "SEND RSVP";
           button.disabled = false;
         })
-        .catch(error => console.error('Error!', error.message));
+        .catch(error => {
+          console.error('Error!', error.message);
+          button.innerText = "ERROR - TRY AGAIN";
+          button.disabled = false;
+        });
     });
   </script>
 </body>
