@@ -232,7 +232,27 @@
     canvas.addEventListener("touchmove", scratch, { passive: false });
     window.addEventListener("touchend", () => isDrawing = false);
     window.onload = initCanvas;
-    
+    // RSVP Form Submission
+    document.getElementById("rsvp-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const button = this.querySelector("button");
+      button.innerText = "Sending...";
+      button.disabled = true;
+
+      const formData = new FormData(this);
+      
+      // PASTE YOUR GOOGLE SCRIPT URL HERE
+      const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'; 
+      
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          document.getElementById("form-status").style.display = "block";
+          this.reset();
+          button.innerText = "Send RSVP";
+          button.disabled = false;
+        })
+        .catch(error => console.error('Error!', error.message));
+    });
   </script>
 </body>
 </html>
