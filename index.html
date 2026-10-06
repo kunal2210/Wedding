@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Invitation</title>
+  <style>
+    /* Reset & Base Styles */
+    body { margin: 0; font-family: 'Georgia', serif; background: #fdfbf7; color: #333; overflow-x: hidden; }
+    
+    /* 3D Envelope Section */
+    .hero-section { perspective: 1200px; height: 100vh; display: flex; align-items: center; justify-content: center; background: #ebdcd0; }
+    .envelope-wrapper { position: relative; width: 320px; height: 220px; transform-style: preserve-3d; transition: transform 1s ease; cursor: pointer; }
+    .envelope-pocket { position: absolute; bottom: 0; width: 100%; height: 100%; background: #c6a282; border-radius: 4px; z-index: 3; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+    .envelope-flap { position: absolute; top: 0; width: 100%; height: 120px; background: #dcb89a; clip-path: polygon(0 0, 50% 100%, 100% 0); transform-origin: top; transition: transform 0.8s ease; z-index: 4; }
+    
+    /* Card & Scratch Reveal */
+    .invitation-card { position: absolute; bottom: 0; left: 5%; width: 90%; height: 200px; background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 1s ease 0.3s; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .envelope-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
+    .envelope-wrapper.open .invitation-card { transform: translateY(-160px); z-index: 5; }
+    
+    .scratch-container { position: relative; width: 80%; height: 100px; margin-top: 15px; }
+    .hidden-date { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; color: #a4505f; z-index: 1; }
+    #scratch-pad { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; border-radius: 8px; }
+
+    /* RSVP Section */
+    .rsvp-section { padding: 60px 20px; text-align: center; max-width: 500px; margin: 0 auto; }
+    .rsvp-section input, .rsvp-section select, .rsvp-section button { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .rsvp-section button { background: #a4505f; color: white; border: none; cursor: pointer; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- 3D Envelope Reveal -->
+  <div class="hero-section">
+    <div class="envelope-wrapper" id="envelope">
+      <div class="envelope-flap"></div>
+      <div class="invitation-card">
+        <h3>You're Invited!</h3>
+        <p>Scratch to reveal the date</p>
+        <div class="scratch-container">
+          <div class="hidden-date">September 30, 2026</div>
+          <canvas id="scratch-pad"></canvas>
+        </div>
+      </div>
+      <div class="envelope-pocket"></div>
+    </div>
+  </div>
+
+  <!-- RSVP Form -->
+  <div class="rsvp-section">
+    <h2>Send a Message</h2>
+    <form id="rsvp-form">
+      <input type="text" id="name" name="name" placeholder="Your full name" required>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+      <select id="attending" name="attending">
+        <option value="Yes">Joyfully Accepts</option>
+        <option value="No">Regretfully Declines</option>
+      </select>
+      <button type="submit">Submit RSVP</button>
+    </form>
+    <p id="form-status" style="display:none; color: green; margin-top: 10px;">Thank you! Your response has been saved.</p>
+  </div>
+
+  <script>
+    // 1. Envelope Animation
+    document.getElementById("envelope").addEventListener("click", function() {
+      this.classList.add("open");
+    });
+
+    // 2. Scratch Card Logic
+    const canvas = document.getElementById("scratch-pad");
+    const ctx = canvas.getContext("2d");
+    let isDrawing = false;
+
+    function initCanvas() {
+      canvas.width = canvas.parentElement.offsetWidth;
+      canvas.height = canvas.parentElement.offsetHeight;
+      
+      // Draw the scratch-off covering
+      ctx.fillStyle = "#e0c9c9";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "16px Georgia";
+      ctx.fillStyle = "#a4505f";
+      ctx.textAlign = "center";
+      ctx.fillText("Scratch Here", canvas.width / 2, canvas.height / 2 + 5);
+      
+      // Set blending mode to erase the covering
+      ctx.globalCompositeOperation = "destination-out";
+    }
+
+    const scratch = (e) => {
+      if (!isDrawing) return;
+      e.preventDefault(); // Prevent scrolling while scratching
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 15, 0, Math.PI * 2, false);
+      ctx.fill();
+    };
+
+    canvas.addEventListener("mousedown", () => isDrawing = true);
+    canvas.addEventListener("mousemove", scratch);
+    window.addEventListener("mouseup", () => isDrawing = false);
+    
+    canvas.addEventListener("touchstart", (e) => { isDrawing = true; scratch(e); });
+    canvas.addEventListener("touchmove", scratch, { passive: false });
+    window.addEventListener("touchend", () => isDrawing = false);
+
+    window.onload = initCanvas;
+
+    // 3. RSVP Form Submission
+    document.getElementById("rsvp-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const button = this.querySelector("button");
+      button.innerText = "Sending...";
+      button.disabled = true;
+
+      const formData = new FormData(this);
+      
+      // Replace with your Google Apps Script Web App URL
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwWaWK6hFyCU4f3IMeDY_mdeBM5FEM-58nTIiCwsq6silc4ZkzoCUnLbTAWiWxnLBw26A/exec'; 
+      
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          document.getElementById("form-status").style.display = "block";
+          this.reset();
+          button.innerText = "Submit RSVP";
+          button.disabled = false;
+        })
+        .catch(error => console.error('Error!', error.message));
+    });
+  </script>
+</body>
+</html>
