@@ -3,186 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kunal & Neha - Wedding Invitation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <title>Wedding Invitation</title>
   <style>
-    /* Ultra-Premium Base Variables */
-    :root {
-      --gold-foil: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-      --dark-glass: rgba(15, 15, 20, 0.75);
-      --text-light: #fdfbf7;
-    }
+    /* Reset & Base Styles */
+    body { margin: 0; font-family: 'Georgia', serif; background: #fdfbf7; color: #333; overflow-x: hidden; }
     
-    body { 
-      margin: 0; 
-      font-family: 'Montserrat', sans-serif; 
-      color: var(--text-light);
-      background: linear-gradient(rgba(10, 5, 10, 0.85), rgba(10, 5, 10, 0.85)), 
-                  url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1080&auto=format&fit=crop') center/cover fixed;
-      overflow-x: hidden;
-      max-width: 480px;
-      margin: 0 auto;
-      box-shadow: 0 0 40px rgba(0,0,0,0.8);
-      position: relative;
-    }
-
-    /* Typography */
-    h1, h2, h3, h4 { font-family: 'Cinzel', serif; text-align: center; margin: 0; }
-    .gold-text {
-      background: var(--gold-foil);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0px 2px 4px rgba(0,0,0,0.3);
-    }
-    .cursive { font-family: 'Great Vibes', cursive; font-size: 3rem; margin: 5px 0; }
+    /* 3D Envelope Section */
+    .hero-section { perspective: 1200px; height: 100vh; display: flex; align-items: center; justify-content: center; background: #ebdcd0; }
+    .envelope-wrapper { position: relative; width: 320px; height: 220px; transform-style: preserve-3d; transition: transform 1s ease; cursor: pointer; }
+    .envelope-pocket { position: absolute; bottom: 0; width: 100%; height: 100%; background: #c6a282; border-radius: 4px; z-index: 3; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+    .envelope-flap { position: absolute; top: 0; width: 100%; height: 120px; background: #dcb89a; clip-path: polygon(0 0, 50% 100%, 100% 0); transform-origin: top; transition: transform 0.8s ease; z-index: 4; }
     
-    /* Music Controls */
-    .music-toggle { position: absolute; top: 20px; right: 20px; z-index: 100; width: 40px; height: 40px; border-radius: 50%; background: var(--gold-foil); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); animation: pulse 2s infinite; }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); } 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); } }
-
-    /* 3D Envelope Reveal */
-    .hero-section { perspective: 1200px; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .envelope-wrapper { position: relative; width: 340px; height: 240px; transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer; }
-    
-    /* Textured Envelope Parts */
-    .envelope-pocket { position: absolute; bottom: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1c1c24, #121217); border-radius: 6px; z-index: 3; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 20px 40px rgba(0,0,0,0.6); border: 1px solid rgba(212, 175, 55, 0.3); }
-    .envelope-pocket::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-top: 1px solid rgba(255,255,255,0.05); }
-    
-    .envelope-flap { position: absolute; top: 0; width: 100%; height: 150px; background: linear-gradient(to bottom, #23232d, #1a1a22); clip-path: polygon(0 0, 50% 100%, 100% 0); transform-origin: top; transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1); z-index: 4; border-bottom: 2px solid rgba(212, 175, 55, 0.5); }
-    
-    .wax-seal { position: absolute; left: 50%; bottom: -30px; transform: translateX(-50%); width: 60px; height: 60px; background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b, #8b6508); border-radius: 50%; z-index: 5; box-shadow: 0 6px 12px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; color: #5a3c00; font-weight: 700; font-family: 'Cinzel'; font-size: 0.85rem; border: 2px solid #daa520; text-transform: uppercase; letter-spacing: 1px;}
-    
-    /* Inner Card */
-    .invitation-card { position: absolute; bottom: 0; left: 3%; width: 94%; height: 320px; background: linear-gradient(to bottom, #ffffff, #f4ecd8); border-radius: 12px; box-shadow: 0 -10px 20px rgba(0,0,0,0.3); transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1) 0.4s; z-index: 2; display: flex; flex-direction: column; align-items: center; padding-top: 30px; border: 4px double #b8860b; color: #333; }
-    
+    /* Card & Scratch Reveal */
+    .invitation-card { position: absolute; bottom: 0; left: 5%; width: 90%; height: 200px; background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 1s ease 0.3s; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .envelope-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
-    .envelope-wrapper.open .invitation-card { transform: translateY(-180px); z-index: 5; }
-
-    /* Frosted Glass Sections */
-    .section { margin: 20px; padding: 40px 25px; border-radius: 16px; background: var(--dark-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); text-align: center; }
+    .envelope-wrapper.open .invitation-card { transform: translateY(-160px); z-index: 5; }
     
-    /* Interactive Scratch Area */
-    .scratch-wrapper { margin-top: 25px; display: flex; justify-content: center; }
-    .scratch-container { position: relative; width: 260px; height: 260px; clip-path: path('M130 230 C -60 120, 0 -40, 130 50 C 260 -40, 320 120, 130 230'); }
-    .hidden-date { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, #fff, #f4ecd8); color: #8a3a4b; z-index: 1; }
-    #scratch-pad { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer; }
+    .scratch-container { position: relative; width: 80%; height: 100px; margin-top: 15px; }
+    .hidden-date { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; color: #a4505f; z-index: 1; }
+    #scratch-pad { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; border-radius: 8px; }
 
-    /* Elegant Timeline */
-    .timeline-item { text-align: left; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid #d4af37; position: relative; }
-    .timeline-item::before { content: '♦'; position: absolute; left: -8.5px; top: 20px; color: #d4af37; font-size: 1.2rem; }
-    .timeline-item p { margin: 5px 0 0 0; font-size: 0.9rem; color: #ccc; }
-
-    /* RSVP Form */
-    .rsvp-section input, .rsvp-section select, .rsvp-section button { width: 100%; padding: 16px; margin-bottom: 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: white; font-family: 'Montserrat'; box-sizing: border-box; }
-    .rsvp-section input::placeholder { color: #aaa; }
-    .rsvp-section button { background: var(--gold-foil); color: #333; font-family: 'Cinzel'; font-weight: 700; font-size: 1.2rem; text-transform: uppercase; border: none; cursor: pointer; transition: transform 0.2s; }
-    .rsvp-section button:active { transform: scale(0.98); }
+    /* RSVP Section */
+    .rsvp-section { padding: 60px 20px; text-align: center; max-width: 500px; margin: 0 auto; }
+    .rsvp-section input, .rsvp-section select, .rsvp-section button { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .rsvp-section button { background: #a4505f; color: white; border: none; cursor: pointer; font-weight: bold; }
   </style>
 </head>
 <body>
 
-  
- <!-- Background Audio -->
-  <audio id="bg-music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
-
-  <div class="music-toggle" id="music-btn">🎵</div>
-
   <!-- 3D Envelope Reveal -->
   <div class="hero-section">
     <div class="envelope-wrapper" id="envelope">
-      <div class="envelope-flap">
-        <div class="wax-seal">Open</div>
-      </div>
+      <div class="envelope-flap"></div>
       <div class="invitation-card">
-        <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #666;">We invite you to celebrate</p>
-        <div class="cursive gold-text">Kunal</div>
-        <div style="font-family: 'Cinzel'; font-size: 1.2rem; color: #999; margin: -5px 0;">&</div>
-        <div class="cursive gold-text">Misty</div>
+        <h3>You're Invited!</h3>
+        <p>Scratch to reveal the date</p>
+        <div class="scratch-container">
+          <div class="hidden-date">September 30, 2026</div>
+          <canvas id="scratch-pad"></canvas>
+        </div>
       </div>
       <div class="envelope-pocket"></div>
     </div>
   </div>
 
-  <!-- Scratch to Reveal -->
-  <div class="section">
-    <h2 class="gold-text">Our Forever Begins</h2>
-    <p style="color: #aaa; font-size: 0.9rem;">Gently scratch the heart to reveal the date</p>
-    <div class="scratch-wrapper">
-      <div class="scratch-container">
-        <div class="hidden-date">
-          <h3 style="color: #8a3a4b; font-size: 1.4rem;">21st November</h3>
-          <h4 style="color: #b8860b; font-size: 1.2rem; margin-top: 5px;">2026</h4>
-        </div>
-        <canvas id="scratch-pad"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- Program Timeline -->
-  <div class="section">
-    <h2 class="gold-text" style="margin-bottom: 25px;">Ceremonies</h2>
-    <div class="timeline-item">
-      <h4 class="gold-text" style="text-align: left;">Haldi</h4>
-      <p>November 20, 2026 • 10:00 AM</p>
-    </div>
-    <div class="timeline-item">
-      <h4 class="gold-text" style="text-align: left;">Engagement</h4>
-      <p>November 20, 2026 • 04:00 PM</p>
-    </div>
-    <div class="timeline-item">
-      <h4 class="gold-text" style="text-align: left;">Mehandi & Sangeet</h4>
-      <p>November 20, 2026 • 07:00 PM Onwards</p>
-    </div>
-  </div>
-
-  <!-- Venue -->
-  <div class="section">
-    <h2 class="gold-text" style="margin-bottom: 15px;">The Venue</h2>
-    <h3>Ganpati Vatika</h3>
-    <p style="color: #bbb; line-height: 1.6;">Postal Park<br>Patna, Bihar</p>
-    <br>
-    <a href="#" style="color: #333; background: var(--gold-foil); padding: 12px 25px; text-decoration: none; border-radius: 30px; font-family: 'Cinzel'; font-weight: bold;">View Map</a>
-  </div>
-
-  <!-- RSVP -->
-  <div class="section rsvp-section" style="margin-bottom: 50px;">
-    <h2 class="gold-text" style="margin-bottom: 25px;">Grace Us With Your Presence</h2>
-    <form id="rsvp-form" onsubmit="submitRSVP(event)">
-    <input type="text" name="name" placeholder="Your Honored Name" required>
-    <input type="email" name="email" placeholder="Email Address" required>
-    <select name="attending">
-      <option value="Yes">Joyfully Accepts</option>
-      <option value="No">Regretfully Declines</option>
-    </select>
-    <button type="submit" id="submit-btn">Send RSVP</button>
-  </form>
-  <p id="form-status" style="display:none; color: #d4af37; margin-top: 15px; font-family: 'Cinzel';">Thank you. Your response is recorded.</p>
-    <p id="form-status" style="display:none; color: #d4af37; margin-top: 15px; font-family: 'Cinzel';">Thank you. Your response is recorded.</p>
+  <!-- RSVP Form -->
+  <div class="rsvp-section">
+    <h2>Send a Message</h2>
+    <form id="rsvp-form">
+      <input type="text" id="name" name="name" placeholder="Your full name" required>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+      <select id="attending" name="attending">
+        <option value="Yes">Joyfully Accepts</option>
+        <option value="No">Regretfully Declines</option>
+      </select>
+      <button type="submit">Submit RSVP</button>
+    </form>
+    <p id="form-status" style="display:none; color: green; margin-top: 10px;">Thank you! Your response has been saved.</p>
   </div>
 
   <script>
-    // Audio Control
-    const audio = document.getElementById("bg-music");
-    const musicBtn = document.getElementById("music-btn");
-    let isPlaying = false;
-
-    function toggleMusic() {
-      if (isPlaying) { audio.pause(); musicBtn.style.opacity = "0.5"; } 
-      else { audio.play().catch(e => console.log("Autoplay prevented")); musicBtn.style.opacity = "1"; }
-      isPlaying = !isPlaying;
-    }
-    musicBtn.addEventListener("click", toggleMusic);
-
-    // Envelope Animation & Trigger Audio
+    // 1. Envelope Animation
     document.getElementById("envelope").addEventListener("click", function() {
       this.classList.add("open");
-      if (!isPlaying) toggleMusic(); // Start music on first interaction
-      setTimeout(() => { window.scrollBy({ top: window.innerHeight - 80, behavior: 'smooth' }); }, 1800);
     });
 
-    // Scratch Card Logic (Premium Rose Gold Glitter Texture)
+    // 2. Scratch Card Logic
     const canvas = document.getElementById("scratch-pad");
     const ctx = canvas.getContext("2d");
     let isDrawing = false;
@@ -191,49 +77,41 @@
       canvas.width = canvas.parentElement.offsetWidth;
       canvas.height = canvas.parentElement.offsetHeight;
       
-      // Create a gradient that looks like shiny metallic foil
-      let gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, "#c9a0a8");
-      gradient.addColorStop(0.5, "#e6c3c9");
-      gradient.addColorStop(1, "#a87b84");
-      
-      ctx.fillStyle = gradient;
+      // Draw the scratch-off covering
+      ctx.fillStyle = "#e0c9c9";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Add text overlay to the foil
-      ctx.font = "bold 18px Cinzel";
-      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.font = "16px Georgia";
+      ctx.fillStyle = "#a4505f";
       ctx.textAlign = "center";
-      ctx.fillText("SCRATCH", canvas.width / 2, canvas.height / 2 + 5);
+      ctx.fillText("Scratch Here", canvas.width / 2, canvas.height / 2 + 5);
       
+      // Set blending mode to erase the covering
       ctx.globalCompositeOperation = "destination-out";
     }
 
     const scratch = (e) => {
       if (!isDrawing) return;
-      e.preventDefault(); 
+      e.preventDefault(); // Prevent scrolling while scratching
       const rect = canvas.getBoundingClientRect();
       const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
       const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
 
       ctx.beginPath();
-      // Use a softer, glowing edge for the scratch brush
-      let brush = ctx.createRadialGradient(x, y, 5, x, y, 25);
-      brush.addColorStop(0, "rgba(0,0,0,1)");
-      brush.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = brush;
-      ctx.arc(x, y, 25, 0, Math.PI * 2, false);
+      ctx.arc(x, y, 15, 0, Math.PI * 2, false);
       ctx.fill();
     };
 
     canvas.addEventListener("mousedown", () => isDrawing = true);
     canvas.addEventListener("mousemove", scratch);
     window.addEventListener("mouseup", () => isDrawing = false);
+    
     canvas.addEventListener("touchstart", (e) => { isDrawing = true; scratch(e); });
     canvas.addEventListener("touchmove", scratch, { passive: false });
     window.addEventListener("touchend", () => isDrawing = false);
+
     window.onload = initCanvas;
-    // RSVP Form Submission
+
+    // 3. RSVP Form Submission
     document.getElementById("rsvp-form").addEventListener("submit", function(e) {
       e.preventDefault();
       const button = this.querySelector("button");
@@ -242,32 +120,18 @@
 
       const formData = new FormData(this);
       
-   // Explicit RSVP Form Submission Function
-    function submitRSVP(e) {
-      e.preventDefault(); // This is the exact command that stops the page from jumping up
+      // Replace with your Google Apps Script Web App URL
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwWaWK6hFyCU4f3IMeDY_mdeBM5FEM-58nTIiCwsq6silc4ZkzoCUnLbTAWiWxnLBw26A/exec'; 
       
-      const form = document.getElementById("rsvp-form");
-      const button = document.getElementById("submit-btn");
-      
-      button.innerText = "SENDING...";
-      button.disabled = true;
-
-      const formData = new FormData(form);
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwWaWK6hFyCU4f3IMeDY_mdeBM5FEM-58nTIiCwsq6silc4ZkzoCUnLbTAWiWxnLBw26A/exec';
-      
-      fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
-        .then(() => {
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
           document.getElementById("form-status").style.display = "block";
-          form.reset();
-          button.innerText = "SEND RSVP";
+          this.reset();
+          button.innerText = "Submit RSVP";
           button.disabled = false;
         })
-        .catch(error => {
-          console.error('Error!', error.message);
-          button.innerText = "ERROR - TRY AGAIN";
-          button.disabled = false;
-        });
-    }
+        .catch(error => console.error('Error!', error.message));
+    });
   </script>
 </body>
 </html>
